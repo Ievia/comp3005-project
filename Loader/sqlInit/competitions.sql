@@ -14,5 +14,6 @@ create table competitions
     match_updated             varchar,
     match_updated_360         varchar,
     match_available_360       varchar,
-    match_available           varchar
+    match_available           varchar,
+    PRIMARY KEY (competition_id)
 );

@@ -1,11 +1,13 @@
 import psycopg
 import json
 
+pwd = ""
+
 # assumes the data location
 with open('../open-data-0067cae166a56aa80b2ef18f61e16158d6a7359a/data/competitions.json', 'r') as file:
     competitions = json.load(file)
 
-with psycopg.connect("dbname=comp3005finalproject user=postgres password=Turnbull01!") as conn:
+with psycopg.connect(f"dbname=comp3005finalproject user=postgres password={pwd}") as conn:
     with conn.cursor() as cur:
 
         # COMPETITIONS

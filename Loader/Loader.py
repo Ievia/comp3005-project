@@ -5,7 +5,7 @@ import json
 with open('../open-data-0067cae166a56aa80b2ef18f61e16158d6a7359a/data/competitions.json', 'r') as file:
     competitions = json.load(file)
 
-with psycopg.connect("dbname=comp3005finalproject user=postgres") as conn:
+with psycopg.connect("dbname=comp3005finalproject user=postgres password=Turnbull01!") as conn:
     with conn.cursor() as cur:
 
         # COMPETITIONS

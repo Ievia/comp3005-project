@@ -2,7 +2,7 @@
 
 #USE PROGRAM TO DROP ALL TABLES TO TEST LOADING THEM
 
-pwd=""
+pwd="Turnbull01!"
 
 import psycopg
 

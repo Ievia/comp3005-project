@@ -1,22 +1,19 @@
 import psycopg
 import json
+import os
 
 pwd = "Turnbull01!"
 
 # assumes the data location
 
-with open('D:\COMP3005Final\open-data-0067cae166a56aa80b2ef18f61e16158d6a7359a/data/competitions.json', 'r') as file:
+with open('D:/COMP3005Final/open-data-0067cae166a56aa80b2ef18f61e16158d6a7359a/data/competitions.json', 'r') as file:
     competitions = json.load(file)
-
-
-
 
 with psycopg.connect(f"dbname=comp3005finalproject user=postgres password={pwd}") as conn:
     with conn.cursor() as cur:
-
+        
         # COMPETITIONS
         for row in competitions:
-            #if(row['competition_name']=='La Liga' and row['season_name']=='2020/2021'):
                 cur.execute("""
                     INSERT INTO competitions (competition_id, 
                                             season_id, 
@@ -43,7 +40,7 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password={pwd}"
                     row['match_updated_360'],
                     row['match_available_360'],
                     row['match_available']))
-
+                #print(f"added comp: {row['competition_id']}, {row['season_id']}")
         cur.execute("SELECT * FROM competitions")
         cur.fetchone()
 

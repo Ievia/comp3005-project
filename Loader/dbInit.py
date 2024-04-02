@@ -16,3 +16,5 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password={pwd}"
         cur.execute(open("loader/sqlInit/lineupPlayers.sql", "r").read())
 
         conn.commit()
+
+print("\tRelations: competitions, matches, events, lineups, teams, lineupPlayers, and players have been initialized.")

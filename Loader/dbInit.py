@@ -10,6 +10,7 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgr
                                  managers,
                                  match_competition,
                                  matches,
+                                 referees,
                                  seasons,
                                  stadiums,
                                  teams;

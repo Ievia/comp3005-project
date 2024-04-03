@@ -40,6 +40,6 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgr
                           row['match_available_360'],
                           row['match_available']))
 
-# Make the changes to the database persistent
-conn.commit()
-conn.close()
+        # Make the changes to the database persistent
+        conn.commit()
+        conn.close()

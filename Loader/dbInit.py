@@ -8,15 +8,19 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgr
                                  competition_stages,
                                  competitions,
                                  countries,
+                                 event,
+                                 event_type,
                                  lineup,
                                  managers,
                                  match_competition,
                                  matches,
+                                 play_pattern,
                                  player,
                                  position,
                                  referees,
                                  seasons,
                                  stadiums,
+                                 tactics,
                                  teams;
             """)
 
@@ -26,6 +30,7 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgr
         conn.commit()
         cur.execute(open("Loader/sqlInit/lineups.sql", "r").read())
         conn.commit()
-
+        cur.execute(open("Loader/sqlInit/events.sql", "r").read())
         conn.commit()
+
         # conn.close()

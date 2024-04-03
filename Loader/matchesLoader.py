@@ -1,5 +1,4 @@
 import psycopg
-import os
 import json
 
 with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgres") as conn:

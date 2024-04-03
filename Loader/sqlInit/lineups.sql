@@ -1,13 +1,50 @@
--- TODO
-
--- COMPETITIONS
-create table lineups
+CREATE TABLE player
 (
-    match_id                  integer,
-    team_id_away              integer,               
-    team_id_home              integer,
+    player_id       integer PRIMARY KEY,
+    player_name     varchar,
+    player_nickname varchar,
+    jersey_number   integer,
+    country_id      integer,
+    FOREIGN KEY (country_id) REFERENCES comp3005finalproject.public.countries (country_id)
+);
 
-    PRIMARY KEY (match_id)
-    -- FOREIGN KEY (match_id) REFERENCES matches (match_id)
+-- NOTE: from_time and to_time are varchars, NOT TIME
+CREATE TABLE position
+(
+    player_id     integer,
+    position_id   integer,
+    position_name varchar,
+    from_time     varchar,
+    to_time       varchar,
+    from_period   integer,
+    to_period     integer,
+    start_reason  varchar,
+    end_reason    varchar,
+    PRIMARY KEY (player_id, position_id),
+    FOREIGN KEY (player_id) REFERENCES player (player_id)
+);
 
+CREATE TABLE card
+(
+    match_id  integer,
+    player_id integer,
+    time      varchar,
+    card_type varchar,
+    reason    varchar,
+    period    integer,
+    PRIMARY KEY (match_id, player_id, time),
+    FOREIGN KEY  (match_id) REFERENCES comp3005finalproject.public.matches (match_id),
+    FOREIGN KEY (player_id) REFERENCES player (player_id)
+);
+
+
+CREATE TABLE lineup
+(
+    match_id     integer,
+    team_id      integer,
+    player_id    integer,
+    PRIMARY KEY (match_id, team_id, player_id),
+    FOREIGN KEY (match_id) REFERENCES comp3005finalproject.public.matches (match_id),
+    FOREIGN KEY (team_id) REFERENCES comp3005finalproject.public.teams (team_id),
+    FOREIGN KEY (player_id) REFERENCES player (player_id)
 );

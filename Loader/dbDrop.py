@@ -7,14 +7,23 @@ import psycopg
 with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgres") as conn:
     with conn.cursor() as cur:
         cur.execute("""
-                    DROP TABLE IF EXISTS competition_stages,
-                                         competitions,
-                                         countries,
-                                         managers,
-                                         match_competition,
-                                         matches,
-                                         seasons,
-                                         stadiums,
-                                         teams;
-                    """)
+            DROP TABLE IF EXISTS card,
+                                 competition_stages,
+                                 competitions,
+                                 countries,
+                                 event,
+                                 event_type,
+                                 lineup,
+                                 managers,
+                                 match_competition,
+                                 matches,
+                                 play_pattern,
+                                 player,
+                                 position,
+                                 referees,
+                                 seasons,
+                                 stadiums,
+                                 tactics,
+                                 teams;
+            """)
         conn.commit()

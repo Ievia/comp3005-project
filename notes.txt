@@ -1,0 +1,26 @@
+la liga: 2020/2021  -> 90
+         2019/2020  -> 42
+         2018/2019  -> 4
+
+premier: 2003/2004  -> 44
+
+
+COMPETITIONS
+
+primary key: competition_id ? season_id
+11 -> la liga
+2  -> premier
+
+MATCHES
+
+primary key: matches_id
+foreign key: season_id
+
+LINEUPS
+
+name is match_id.json
+references team_id, player_id
+
+EVENTS
+
+primary key: id

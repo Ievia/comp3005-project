@@ -4,12 +4,16 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgr
     with conn.cursor() as cur:
         # DROP EVERY TABLE
         cur.execute("""
-            DROP TABLE IF EXISTS competition_stages,
+            DROP TABLE IF EXISTS card,
+                                 competition_stages,
                                  competitions,
                                  countries,
+                                 lineup,
                                  managers,
                                  match_competition,
                                  matches,
+                                 player,
+                                 position,
                                  referees,
                                  seasons,
                                  stadiums,
@@ -20,13 +24,8 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgr
         conn.commit()
         cur.execute(open("Loader/sqlInit/matches.sql", "r").read())
         conn.commit()
-        # cur.execute(open("Loader/sqlInit/teams.sql", "r").read())
-        # cur.execute(open("Loader/sqlInit/players.sql", "r").read())
-        # cur.execute(open("Loader/sqlInit/events.sql", "r").read())
-        # cur.execute(open("Loader/sqlInit/lineups.sql", "r").read())
-        # cur.execute(open("Loader/sqlInit/lineupPlayers.sql", "r").read())
+        cur.execute(open("Loader/sqlInit/lineups.sql", "r").read())
+        conn.commit()
 
         conn.commit()
         # conn.close()
-
-print("\tRelations: competitions, matches, events, lineups, teams, lineupPlayers, and players have been initialized.")

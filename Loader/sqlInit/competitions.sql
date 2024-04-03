@@ -1,6 +1,3 @@
--- TODO
-
--- COMPETITIONS
 create table competitions
 (
     competition_id            integer,

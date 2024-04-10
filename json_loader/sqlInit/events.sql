@@ -60,8 +60,27 @@ CREATE TABLE pass
 (
     event_id     varchar,
     team_id      integer,
+    player_id    integer,
     recipient_id integer,
+    through_ball boolean,
     FOREIGN KEY (event_id) REFERENCES event (id),
     FOREIGN KEY (team_id) REFERENCES project_database.public.teams (team_id),
     FOREIGN KEY (recipient_id) REFERENCES project_database.public.player (player_id)
+);
+
+CREATE TABLE dribble
+(
+    event_id  varchar,
+    player_id integer,
+    outcome   varchar,
+    FOREIGN KEY (event_id) REFERENCES event (id),
+    FOREIGN KEY (player_id) REFERENCES project_database.public.player (player_id)
+);
+
+CREATE TABLE dribbled_past
+(
+    event_id  varchar,
+    player_id integer,
+    FOREIGN KEY (event_id) REFERENCES event (id),
+    FOREIGN KEY (player_id) REFERENCES project_database.public.player (player_id)
 )

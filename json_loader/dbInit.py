@@ -8,6 +8,8 @@ with psycopg.connect(f"dbname=project_database user=postgres password=1234") as 
                                  competition_stages,
                                  competitions,
                                  countries,
+                                 dribble,
+                                 dribbled_past,
                                  event,
                                  event_type,
                                  lineup,

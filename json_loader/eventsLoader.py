@@ -116,8 +116,33 @@ with psycopg.connect(f"dbname=project_database user=postgres password=1234") as 
                         else:
                             recipient_id = None
                         cur.execute("""
-                            INSERT INTO pass (event_id, team_id, recipient_id)
-                            VALUES (%s, %s, %s);
+                            INSERT INTO pass (event_id, 
+                                              team_id, 
+                                              player_id,
+                                              recipient_id,
+                                              through_ball)
+                            VALUES (%s, %s, %s, %s, %s);
                         """, (row['id'],
                               row['team']['id'],
-                              recipient_id))
+                              row['player']['id'],
+                              recipient_id,
+                              row['pass'].get('through_ball', False)))
+                    conn.commit()
+
+                    # dribble
+                    if row['type']['id'] == 14:
+                        cur.execute("""
+                            INSERT INTO dribble (event_id, player_id, outcome)
+                            VALUES (%s, %s, %s)
+                        """, (row['id'],
+                              row['player']['id'],
+                              row['dribble']['outcome']['name']))
+                    conn.commit()
+
+                    # dribbled past
+                    if row['type']['id'] == 39:
+                        cur.execute("""
+                            INSERT INTO dribbled_past(event_id, player_id)
+                            VALUES (%s, %s)
+                        """, (row['id'],
+                              row['player']['id']))

@@ -339,7 +339,16 @@ def Q_7(cursor, conn, execution_time):
     #==========================================================================
     # Enter QUERY within the quotes:
 
-    query = """ """
+    query = """
+        SELECT player.player_name, COUNT(pass.through_ball)
+        FROM pass
+        JOIN player ON player.player_id = pass.player_id
+        JOIN event ON pass.event_id = event.id
+        WHERE event.season_id = 90 AND pass.through_ball = TRUE
+        GROUP BY player.player_name
+        HAVING COUNT(pass.through_ball) >= 1
+        ORDER BY COUNT(pass.through_ball) DESC
+    """
 
     #==========================================================================
 
@@ -357,7 +366,16 @@ def Q_8(cursor, conn, execution_time):
     #==========================================================================
     # Enter QUERY within the quotes:
 
-    query = """ """
+    query = """
+        SELECT teams.team_name, COUNT(pass.through_ball)
+        FROM pass
+        JOIN teams ON teams.team_id = pass.team_id
+        JOIN event ON pass.event_id = event.id
+        WHERE event.season_id = 90 AND pass.through_ball = TRUE
+        GROUP BY teams.team_name
+        HAVING COUNT(pass.through_ball) >= 1
+        ORDER BY COUNT(pass.through_ball) DESC
+    """
 
     #==========================================================================
 
@@ -375,7 +393,16 @@ def Q_9(cursor, conn, execution_time):
     #==========================================================================
     # Enter QUERY within the quotes:
 
-    query = """ """
+    query = """
+        SELECT player.player_name, COUNT(dribble.outcome)
+        FROM dribble
+        JOIN player ON player.player_id = dribble.player_id
+        JOIN event ON dribble.event_id = event.id
+        WHERE event.season_id IN (90, 42, 4) AND dribble.outcome = 'Complete'
+        GROUP BY player.player_name
+        HAVING COUNT(dribble.outcome) >= 1
+        ORDER BY COUNT(dribble.outcome) DESC
+    """
 
     #==========================================================================
 
@@ -393,7 +420,16 @@ def Q_10(cursor, conn, execution_time):
     #==========================================================================
     # Enter QUERY within the quotes:
 
-    query = """ """
+    query = """
+        SELECT player.player_name, COUNT(dribbled_past.player_id)
+        FROM dribbled_past
+        JOIN player ON player.player_id = dribbled_past.player_id
+        JOIN event ON dribbled_past.event_id = event.id
+        WHERE event.season_id = 90
+        GROUP BY player.player_name
+        HAVING COUNT(dribbled_past.player_id) >= 1
+        ORDER BY COUNT(dribbled_past.player_id) ASC
+    """
 
     #==========================================================================
 

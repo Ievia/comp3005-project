@@ -14,6 +14,7 @@ with psycopg.connect(f"dbname=project_database user=postgres password=1234") as 
                                  managers,
                                  match_competition,
                                  matches,
+                                 pass,
                                  play_pattern,
                                  player,
                                  position,

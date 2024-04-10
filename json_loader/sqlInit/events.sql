@@ -48,8 +48,20 @@ CREATE TABLE shot
 (
     event_id     varchar,
     player_id    integer,
+    team_id      integer,
     statsbomb_xg decimal,
-    PRIMARY KEY (event_id, player_id),
+    first_time   boolean,
     FOREIGN KEY (event_id) REFERENCES event (id),
-    FOREIGN KEY (player_id) REFERENCES project_database.public.player (player_id)
+    FOREIGN KEY (player_id) REFERENCES project_database.public.player (player_id),
+    FOREIGN KEY (team_id) REFERENCES project_database.public.teams (team_id)
 );
+
+CREATE TABLE pass
+(
+    event_id     varchar,
+    team_id      integer,
+    recipient_id integer,
+    FOREIGN KEY (event_id) REFERENCES event (id),
+    FOREIGN KEY (team_id) REFERENCES project_database.public.teams (team_id),
+    FOREIGN KEY (recipient_id) REFERENCES project_database.public.player (player_id)
+)

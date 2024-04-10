@@ -67,8 +67,15 @@ def load_database(cursor, conn):
     # Import the dbexport.sql database data into this database
     try:
         command = f'psql -h {host} -U {user} -d {query_database_name} -a -f {os.path.join(dir_path, "dbexport.sql")}'
-        env = {'PGPASSWORD': password}
+        env = os.environ.copy()
+        env['PGPASSWORD'] = password
+        # env = {'PGPASSWORD': password}
         subprocess.run(command, shell=True, check=True, env=env)
+
+        # original
+        # command = f'psql -h {host} -U {user} -d {query_database_name} -a -f {os.path.join(dir_path, "dbexport.sql")}'
+        # env = {'PGPASSWORD': password}
+        # subprocess.run(command, shell=True, check=True, env=env)
 
     except subprocess.CalledProcessError as e:
         print(f"An error occurred while loading the database: {e}")
@@ -169,13 +176,13 @@ def Q_1(cursor, conn, execution_time):
     # Enter QUERY within the quotes:
 
     query = """
-        SELECT player.player_name, AVG(shot.statsbomb_xg) as avg_xg
+        SELECT player.player_name, AVG(shot.statsbomb_xg)
         FROM shot
         JOIN player ON shot.player_id = player.player_id
         JOIN event ON shot.event_id = event.id
         WHERE event.season_id = 90 AND shot.statsbomb_xg > 0
         GROUP BY player.player_name
-        ORDER BY avg_xg DESC
+        ORDER BY AVG(shot.statsbomb_xg) DESC
     """
 
     #==========================================================================
@@ -195,7 +202,16 @@ def Q_2(cursor, conn, execution_time):
     #==========================================================================
     # Enter QUERY within the quotes:
 
-    query = """ """
+    query = """
+        SELECT player.player_name, COUNT(shot.player_id)
+        FROM shot
+        JOIN player ON shot.player_id = player.player_id
+        JOIN event ON shot.event_id = event.id
+        WHERE event.season_id = 90
+        GROUP BY player.player_name
+        HAVING COUNT(shot.player_id) > 0
+        ORDER BY COUNT(shot.player_id) DESC
+    """
 
     #==========================================================================
 
@@ -214,7 +230,16 @@ def Q_3(cursor, conn, execution_time):
     #==========================================================================
     # Enter QUERY within the quotes:
 
-    query = """ """
+    query = """
+        SELECT player.player_name, COUNT(shot.first_time)
+        FROM shot
+        JOIN player ON shot.player_id = player.player_id
+        JOIN event ON shot.event_id = event.id
+        WHERE event.season_id IN (90, 42, 4) AND shot.first_time = TRUE
+        GROUP BY player.player_name
+        HAVING COUNT(shot.first_time) >= 1
+        ORDER BY COUNT(shot.first_time) DESC
+    """
 
     #==========================================================================
 
@@ -232,7 +257,16 @@ def Q_4(cursor, conn, execution_time):
     #==========================================================================
     # Enter QUERY within the quotes:
 
-    query = """ """
+    query = """
+        SELECT teams.team_name, COUNT(pass.team_id)
+        FROM pass
+        JOIN teams ON teams.team_id = pass.team_id
+        JOIN event ON pass.event_id = event.id
+        WHERE event.season_id = 90
+        GROUP BY teams.team_name
+        HAVING COUNT(pass.team_id) >= 1
+        ORDER BY COUNT(pass.team_id) DESC
+    """
 
     #==========================================================================
 
@@ -250,7 +284,16 @@ def Q_5(cursor, conn, execution_time):
     #==========================================================================
     # Enter QUERY within the quotes:
 
-    query = """ """
+    query = """
+        SELECT player.player_name, COUNT(pass.recipient_id)
+        FROM pass
+        JOIN player ON player.player_id = pass.recipient_id
+        JOIN event ON pass.event_id = event.id
+        WHERE event.season_id = 44
+        GROUP BY player.player_name
+        HAVING COUNT(pass.recipient_id) >= 1
+        ORDER BY COUNT(pass.recipient_id) DESC
+    """
 
     #==========================================================================
 
@@ -268,7 +311,17 @@ def Q_6(cursor, conn, execution_time):
     #==========================================================================
     # Enter QUERY within the quotes:
 
-    query = """ """
+    query = """
+        SELECT teams.team_name, COUNT(shot.team_id)
+        FROM shot
+        JOIN teams ON teams.team_id = shot.team_id
+        JOIN event ON shot.event_id = event.id
+        WHERE event.season_id = 44
+        GROUP BY teams.team_name
+        HAVING COUNT(shot.team_id) >= 1
+        ORDER BY COUNT(shot.team_id) DESC
+
+    """
 
     #==========================================================================
 

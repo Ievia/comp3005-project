@@ -95,10 +95,29 @@ with psycopg.connect(f"dbname=project_database user=postgres password=1234") as 
                     # shot
                     if row['type']['id'] == 16:
                         cur.execute("""
-                            INSERT INTO shot (event_id, player_id, statsbomb_xg)
-                            VALUES (%s, %s, %s)
-                            ON CONFLICT (event_id, player_id) DO NOTHING;
+                            INSERT INTO shot (event_id, 
+                                              player_id,
+                                              team_id, 
+                                              statsbomb_xg,
+                                              first_time)
+                            VALUES (%s, %s, %s, %s, %s);
                         """, (row['id'],
                               row['player']['id'],
-                              row['shot']['statsbomb_xg']))
+                              row['team']['id'],
+                              row['shot']['statsbomb_xg'],
+                              row['shot'].get('first_time', False)))
                     conn.commit()
+
+                    # pass
+                    if row['type']['id'] == 30:
+                        recipient = row['pass'].get('recipient', None)
+                        if recipient is not None:
+                            recipient_id = recipient.get('id', None)
+                        else:
+                            recipient_id = None
+                        cur.execute("""
+                            INSERT INTO pass (event_id, team_id, recipient_id)
+                            VALUES (%s, %s, %s);
+                        """, (row['id'],
+                              row['team']['id'],
+                              recipient_id))

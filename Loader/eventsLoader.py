@@ -37,6 +37,12 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgr
 
                     # event
                     cur.execute("""
+                        SELECT season_id
+                        FROM matches
+                        WHERE match_id = %s
+                    """, (match_id,))
+                    season_id = cur.fetchone()[0]
+                    cur.execute("""
                         INSERT INTO event (id, 
                                            index, 
                                            period, 
@@ -48,8 +54,9 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgr
                                            possession_team_id, 
                                            play_pattern_id, 
                                            team_id, 
-                                           duration) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                                           duration,
+                                           season_id) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         ON CONFLICT (id) DO NOTHING;
                     """, (row['id'],
                           row['index'],
@@ -62,7 +69,8 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgr
                           row['possession_team']['id'],
                           row['play_pattern']['id'],
                           row['team']['id'],
-                          row.get('duration', None)))
+                          row.get('duration', None),
+                          season_id))
                     conn.commit()
 
                     # tactics
@@ -83,3 +91,14 @@ with psycopg.connect(f"dbname=comp3005finalproject user=postgres password=postgr
                                   lineup['position']['id'],
                                   lineup['jersey_number']))
                         conn.commit()
+
+                    # shot
+                    if row['type']['id'] == 16:
+                        cur.execute("""
+                            INSERT INTO shot (event_id, player_id, statsbomb_xg)
+                            VALUES (%s, %s, %s)
+                            ON CONFLICT (event_id, player_id) DO NOTHING;
+                        """, (row['id'],
+                              row['player']['id'],
+                              row['shot']['statsbomb_xg']))
+                    conn.commit()

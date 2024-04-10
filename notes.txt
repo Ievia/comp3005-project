@@ -24,3 +24,5 @@ references team_id, player_id
 EVENTS
 
 primary key: id
+
+pg_dump --file "/Users/daniel/Desktop/db_dump.sql" --host "localhost" --port "5433" --username "postgres" --verbose --format=p "postgres"

@@ -4,6 +4,6 @@
 
 import os
 
-os.system('python3 Loader/dbInit.py && python3 Loader/competitionLoader.py && ' +
-          'python3 Loader/matchesLoader.py && python3 Loader/lineupsLoader.py && ' +
-          'python3 Loader/eventsLoader.py')
+os.system('python3 json_loader/dbInit.py && python3 json_loader/competitionLoader.py && ' +
+          'python3 json_loader/matchesLoader.py && python3 json_loader/lineupsLoader.py && ' +
+          'python3 json_loader/eventsLoader.py')

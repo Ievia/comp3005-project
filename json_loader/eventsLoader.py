@@ -43,20 +43,19 @@ with psycopg.connect(f"dbname=project_database user=postgres password=1234") as 
                     """, (match_id,))
                     season_id = cur.fetchone()[0]
                     cur.execute("""
-                        INSERT INTO event (id, 
-                                           index, 
-                                           period, 
-                                           timestamp, 
-                                           minute, 
-                                           second, 
-                                           event_type_id, 
-                                           possession, 
-                                           possession_team_id, 
-                                           play_pattern_id, 
-                                           team_id, 
-                                           duration,
-                                           season_id) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        INSERT INTO event_info (id, 
+                                                index, 
+                                                period, 
+                                                timestamp, 
+                                                minute, 
+                                                second, 
+                                                event_type_id, 
+                                                possession, 
+                                                possession_team_id, 
+                                                play_pattern_id, 
+                                                team_id, 
+                                                duration) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         ON CONFLICT (id) DO NOTHING;
                     """, (row['id'],
                           row['index'],
@@ -69,8 +68,13 @@ with psycopg.connect(f"dbname=project_database user=postgres password=1234") as 
                           row['possession_team']['id'],
                           row['play_pattern']['id'],
                           row['team']['id'],
-                          row.get('duration', None),
-                          season_id))
+                          row.get('duration', None)))
+                    conn.commit()
+                    cur.execute("""
+                        INSERT INTO events (id, season_id)
+                        VALUES (%s, %s)
+                        ON CONFLICT (id) DO NOTHING;
+                    """, (row['id'], season_id))
                     conn.commit()
 
                     # tactics

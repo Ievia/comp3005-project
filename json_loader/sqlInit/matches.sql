@@ -52,6 +52,7 @@ CREATE TABLE teams
     FOREIGN KEY (country_id) REFERENCES countries (country_id),
     FOREIGN KEY (manager_id) REFERENCES managers (manager_id)
 );
+CREATE INDEX ON teams (team_name);
 
 CREATE TABLE stadiums
 (

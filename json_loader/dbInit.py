@@ -10,8 +10,9 @@ with psycopg.connect(f"dbname=project_database user=postgres password=1234") as 
                                  countries,
                                  dribble,
                                  dribbled_past,
-                                 event,
+                                 event_info,
                                  event_type,
+                                 events,
                                  lineup,
                                  managers,
                                  match_competition,
@@ -26,7 +27,7 @@ with psycopg.connect(f"dbname=project_database user=postgres password=1234") as 
                                  stadiums,
                                  tactics,
                                  teams;
-            """)
+        """)
 
         cur.execute(open("json_loader/sqlInit/competitions.sql", "r").read())
         conn.commit()

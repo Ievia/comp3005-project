@@ -7,6 +7,7 @@ CREATE TABLE player
     country_id      integer,
     FOREIGN KEY (country_id) REFERENCES project_database.public.countries (country_id)
 );
+CREATE INDEX ON player (player_name);
 
 -- NOTE: from_time and to_time are varchars, NOT TIME
 CREATE TABLE position

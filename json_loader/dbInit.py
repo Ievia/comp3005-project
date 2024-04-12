@@ -14,7 +14,6 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
                                  events,
                                  lineups,
                                  managers,
-                                 match_competitions,
                                  matches,
                                  passes,
                                  play_patterns,

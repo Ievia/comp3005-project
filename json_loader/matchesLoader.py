@@ -13,16 +13,16 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
             with open(f, 'r') as file:
                 matches = json.load(file)
             for row in matches:
-                cur.execute("""
-                    INSERT INTO match_competitions (competition_id,
-                                                    country_name,
-                                                    competition_name)
-                    VALUES (%s, %s, %s)
-                    ON CONFLICT (competition_id) DO NOTHING;
-                    """, (row['competition']['competition_id'],
-                          row['competition']['country_name'],
-                          row['competition']['competition_name']))
-                conn.commit()
+                # cur.execute("""
+                #     INSERT INTO match_competitions (competition_id,
+                #                                     country_name,
+                #                                     competition_name)
+                #     VALUES (%s, %s, %s)
+                #     ON CONFLICT (competition_id) DO NOTHING;
+                #     """, (row['competition']['competition_id'],
+                #           row['competition']['country_name'],
+                #           row['competition']['competition_name']))
+                # conn.commit()
 
                 cur.execute("""
                     INSERT INTO seasons (season_id, season_name)

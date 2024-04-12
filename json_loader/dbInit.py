@@ -10,7 +10,7 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
                                  countries,
                                  dribbles,
                                  dribbled_past,
-                                 event_type,
+                                 event_types,
                                  events,
                                  lineups,
                                  managers,

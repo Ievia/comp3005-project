@@ -36,6 +36,8 @@ CREATE TABLE events
     FOREIGN KEY (id) REFERENCES event_info (id),
     FOREIGN KEY (season_id) REFERENCES project_database.public.seasons (season_id)
 );
+CREATE INDEX ON events (season_id);
+-- CREATE UNIQUE INDEX ON events (season_id, id);
 
 CREATE TABLE tactics
 (
@@ -66,6 +68,7 @@ CREATE INDEX ON shot (player_id);
 CREATE INDEX ON shot (team_id);
 CREATE INDEX ON shot (statsbomb_xg);
 CREATE INDEX ON shot (first_time);
+-- CREATE UNIQUE INDEX ON shot (event_id, player_id, statsbomb_xg);
 
 CREATE TABLE pass
 (

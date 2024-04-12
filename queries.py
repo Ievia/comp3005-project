@@ -176,12 +176,12 @@ def Q_1(cursor, conn, execution_time):
     # Enter QUERY within the quotes:
 
     query = """
-        SELECT player.player_name, AVG(shot.statsbomb_xg) AS avg_shot
-        FROM shot
-        JOIN player ON shot.player_id = player.player_id
-        JOIN events ON shot.event_id = events.id
-        WHERE events.season_id = 90 AND shot.statsbomb_xg > 0
-        GROUP BY player.player_name
+        SELECT players.player_name, AVG(shots.statsbomb_xg) AS avg_shot
+        FROM shots
+        JOIN players ON shots.player_id = players.player_id
+        JOIN events ON shots.event_id = events.id
+        WHERE events.season_id = 90 AND shots.statsbomb_xg > 0
+        GROUP BY players.player_name
         ORDER BY avg_shot DESC
     """
 
@@ -203,14 +203,14 @@ def Q_2(cursor, conn, execution_time):
     # Enter QUERY within the quotes:
 
     query = """
-        SELECT player.player_name, COUNT(shot.player_id)
-        FROM shot
-        JOIN player ON shot.player_id = player.player_id
-        JOIN events ON shot.event_id = events.id
+        SELECT players.player_name, COUNT(shots.player_id)
+        FROM shots
+        JOIN players ON shots.player_id = players.player_id
+        JOIN events ON shots.event_id = events.id
         WHERE events.season_id = 90
-        GROUP BY player.player_name
-        HAVING COUNT(shot.player_id) > 0
-        ORDER BY COUNT(shot.player_id) DESC
+        GROUP BY players.player_name
+        HAVING COUNT(shots.player_id) > 0
+        ORDER BY COUNT(shots.player_id) DESC
     """
 
     #==========================================================================
@@ -231,14 +231,14 @@ def Q_3(cursor, conn, execution_time):
     # Enter QUERY within the quotes:
 
     query = """
-        SELECT player.player_name, COUNT(shot.first_time)
-        FROM shot
-        JOIN player ON shot.player_id = player.player_id
-        JOIN events ON shot.event_id = events.id
-        WHERE events.season_id IN (90, 42, 4) AND shot.first_time = TRUE
-        GROUP BY player.player_name
-        HAVING COUNT(shot.first_time) >= 1
-        ORDER BY COUNT(shot.first_time) DESC
+        SELECT players.player_name, COUNT(shots.first_time)
+        FROM shots
+        JOIN players ON shots.player_id = players.player_id
+        JOIN events ON shots.event_id = events.id
+        WHERE events.season_id IN (90, 42, 4) AND shots.first_time = TRUE
+        GROUP BY players.player_name
+        HAVING COUNT(shots.first_time) >= 1
+        ORDER BY COUNT(shots.first_time) DESC
     """
 
     #==========================================================================
@@ -258,14 +258,14 @@ def Q_4(cursor, conn, execution_time):
     # Enter QUERY within the quotes:
 
     query = """
-        SELECT teams.team_name, COUNT(pass.team_id)
-        FROM pass
-        JOIN teams ON teams.team_id = pass.team_id
-        JOIN events ON pass.event_id = events.id
+        SELECT teams.team_name, COUNT(passes.team_id)
+        FROM passes
+        JOIN teams ON teams.team_id = passes.team_id
+        JOIN events ON passes.event_id = events.id
         WHERE events.season_id = 90
         GROUP BY teams.team_name
-        HAVING COUNT(pass.team_id) >= 1
-        ORDER BY COUNT(pass.team_id) DESC
+        HAVING COUNT(passes.team_id) >= 1
+        ORDER BY COUNT(passes.team_id) DESC
     """
 
     #==========================================================================
@@ -285,14 +285,14 @@ def Q_5(cursor, conn, execution_time):
     # Enter QUERY within the quotes:
 
     query = """
-        SELECT player.player_name, COUNT(pass.recipient_id)
-        FROM pass
-        JOIN player ON player.player_id = pass.recipient_id
-        JOIN events ON pass.event_id = events.id
+        SELECT players.player_name, COUNT(passes.recipient_id)
+        FROM passes
+        JOIN players ON players.player_id = passes.recipient_id
+        JOIN events ON passes.event_id = events.id
         WHERE events.season_id = 44
-        GROUP BY player.player_name
-        HAVING COUNT(pass.recipient_id) >= 1
-        ORDER BY COUNT(pass.recipient_id) DESC
+        GROUP BY players.player_name
+        HAVING COUNT(passes.recipient_id) >= 1
+        ORDER BY COUNT(passes.recipient_id) DESC
     """
 
     #==========================================================================
@@ -312,14 +312,14 @@ def Q_6(cursor, conn, execution_time):
     # Enter QUERY within the quotes:
 
     query = """
-        SELECT teams.team_name, COUNT(shot.team_id)
-        FROM shot
-        JOIN teams ON teams.team_id = shot.team_id
-        JOIN events ON shot.event_id = events.id
+        SELECT teams.team_name, COUNT(shots.team_id)
+        FROM shots
+        JOIN teams ON teams.team_id = shots.team_id
+        JOIN events ON shots.event_id = events.id
         WHERE events.season_id = 44
         GROUP BY teams.team_name
-        HAVING COUNT(shot.team_id) >= 1
-        ORDER BY COUNT(shot.team_id) DESC
+        HAVING COUNT(shots.team_id) >= 1
+        ORDER BY COUNT(shots.team_id) DESC
 
     """
 
@@ -340,14 +340,14 @@ def Q_7(cursor, conn, execution_time):
     # Enter QUERY within the quotes:
 
     query = """
-        SELECT player.player_name, COUNT(pass.through_ball)
-        FROM pass
-        JOIN player ON player.player_id = pass.player_id
-        JOIN events ON pass.event_id = events.id
-        WHERE events.season_id = 90 AND pass.through_ball = TRUE
-        GROUP BY player.player_name
-        HAVING COUNT(pass.through_ball) >= 1
-        ORDER BY COUNT(pass.through_ball) DESC
+        SELECT players.player_name, COUNT(passes.through_ball)
+        FROM passes
+        JOIN players ON players.player_id = passes.player_id
+        JOIN events ON passes.event_id = events.id
+        WHERE events.season_id = 90 AND passes.through_ball = TRUE
+        GROUP BY players.player_name
+        HAVING COUNT(passes.through_ball) >= 1
+        ORDER BY COUNT(passes.through_ball) DESC
     """
 
     #==========================================================================
@@ -367,14 +367,14 @@ def Q_8(cursor, conn, execution_time):
     # Enter QUERY within the quotes:
 
     query = """
-        SELECT teams.team_name, COUNT(pass.through_ball)
-        FROM pass
-        JOIN teams ON teams.team_id = pass.team_id
-        JOIN events ON pass.event_id = events.id
-        WHERE events.season_id = 90 AND pass.through_ball = TRUE
+        SELECT teams.team_name, COUNT(passes.through_ball)
+        FROM passes
+        JOIN teams ON teams.team_id = passes.team_id
+        JOIN events ON passes.event_id = events.id
+        WHERE events.season_id = 90 AND passes.through_ball = TRUE
         GROUP BY teams.team_name
-        HAVING COUNT(pass.through_ball) >= 1
-        ORDER BY COUNT(pass.through_ball) DESC
+        HAVING COUNT(passes.through_ball) >= 1
+        ORDER BY COUNT(passes.through_ball) DESC
     """
 
     #==========================================================================
@@ -394,14 +394,14 @@ def Q_9(cursor, conn, execution_time):
     # Enter QUERY within the quotes:
 
     query = """
-        SELECT player.player_name, COUNT(dribble.outcome)
-        FROM dribble
-        JOIN player ON player.player_id = dribble.player_id
-        JOIN events ON dribble.event_id = events.id
-        WHERE events.season_id IN (90, 42, 4) AND dribble.outcome = 'Complete'
-        GROUP BY player.player_name
-        HAVING COUNT(dribble.outcome) >= 1
-        ORDER BY COUNT(dribble.outcome) DESC
+        SELECT players.player_name, COUNT(dribbles.outcome_id)
+        FROM dribbles
+        JOIN players ON players.player_id = dribbles.player_id
+        JOIN events ON dribbles.event_id = events.id
+        WHERE events.season_id IN (90, 42, 4) AND dribbles.outcome_id = 8
+        GROUP BY players.player_name
+        HAVING COUNT(dribbles.outcome_id) >= 1
+        ORDER BY COUNT(dribbles.outcome_id) DESC
     """
 
     #==========================================================================
@@ -421,12 +421,12 @@ def Q_10(cursor, conn, execution_time):
     # Enter QUERY within the quotes:
 
     query = """
-        SELECT player.player_name, COUNT(dribbled_past.player_id)
+        SELECT players.player_name, COUNT(dribbled_past.player_id)
         FROM dribbled_past
-        JOIN player ON player.player_id = dribbled_past.player_id
+        JOIN players ON players.player_id = dribbled_past.player_id
         JOIN events ON dribbled_past.event_id = events.id
         WHERE events.season_id = 90
-        GROUP BY player.player_name
+        GROUP BY players.player_name
         HAVING COUNT(dribbled_past.player_id) >= 1
         ORDER BY COUNT(dribbled_past.player_id) ASC
     """

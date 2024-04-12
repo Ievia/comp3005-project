@@ -30,11 +30,11 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
 
                         # actually insert the player
                         cur.execute("""
-                            INSERT INTO player (player_id, 
-                                                player_name, 
-                                                player_nickname, 
-                                                jersey_number, 
-                                                country_id) 
+                            INSERT INTO players (player_id, 
+                                                 player_name, 
+                                                 player_nickname, 
+                                                 jersey_number, 
+                                                 country_id) 
                             VALUES (%s, %s, %s, %s, %s)
                             ON CONFLICT (player_id) DO NOTHING;
                         """, (player['player_id'],
@@ -47,15 +47,15 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
                         # insert the positions they played
                         for position in player['positions']:
                             cur.execute("""
-                                INSERT INTO position (player_id, 
-                                                      position_id, 
-                                                      position_name, 
-                                                      from_time, 
-                                                      to_time, 
-                                                      from_period, 
-                                                      to_period, 
-                                                      start_reason, 
-                                                      end_reason) 
+                                INSERT INTO positions (player_id, 
+                                                       position_id, 
+                                                       position_name, 
+                                                       from_time, 
+                                                       to_time, 
+                                                       from_period, 
+                                                       to_period, 
+                                                       start_reason, 
+                                                       end_reason) 
                                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                                 ON CONFLICT (player_id, position_id) DO NOTHING;
                             """, (player['player_id'],
@@ -71,12 +71,12 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
 
                         for card in player['cards']:
                             cur.execute("""
-                                INSERT INTO card (match_id, 
-                                                  player_id, 
-                                                  time, 
-                                                  card_type, 
-                                                  reason, 
-                                                  period)
+                                INSERT INTO cards (match_id, 
+                                                   player_id, 
+                                                   time, 
+                                                   card_type, 
+                                                   reason, 
+                                                   period)
                                 VALUES (%s, %s, %s, %s, %s, %s)
                                 ON CONFLICT (match_id, player_id, time) DO NOTHING;
                             """, (match_id,
@@ -89,7 +89,7 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
 
                         # Lineups
                         cur.execute("""
-                                INSERT INTO lineup (match_id, team_id, player_id) 
+                                INSERT INTO lineups (match_id, team_id, player_id) 
                                 VALUES (%s, %s, %s)
                                 ON CONFLICT (match_id, team_id, player_id) DO NOTHING;
                             """, (match_id,

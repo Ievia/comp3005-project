@@ -1,4 +1,4 @@
-CREATE TABLE match_competition
+CREATE TABLE match_competitions
 (
     competition_id   integer PRIMARY KEY,
     country_name     varchar,
@@ -79,7 +79,7 @@ CREATE TABLE matches
     stadium_id            integer,
     referee_id            integer,
     FOREIGN KEY (competition_id, season_id)  REFERENCES competitions (competition_id, season_id),
-    FOREIGN KEY (competition_id) REFERENCES match_competition (competition_id),
+    FOREIGN KEY (competition_id) REFERENCES match_competitions (competition_id),
     FOREIGN KEY (season_id) REFERENCES seasons (season_id),
     FOREIGN KEY (home_team_id) REFERENCES teams (team_id),
     FOREIGN KEY (away_team_id) REFERENCES teams (team_id),

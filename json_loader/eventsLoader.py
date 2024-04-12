@@ -19,7 +19,7 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
                 for row in events:
                     # event type
                     cur.execute("""
-                        INSERT INTO event_type (id, name)
+                        INSERT INTO event_types (id, name)
                         VALUES (%s, %s)
                         ON CONFLICT (id) DO NOTHING;
                     """, (row['type']['id'],
@@ -28,7 +28,7 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
 
                     # play pattern
                     cur.execute("""
-                        INSERT INTO play_pattern (id, name)
+                        INSERT INTO play_patterns (id, name)
                         VALUES (%s, %s)
                         ON CONFLICT (ID) DO NOTHING 
                     """, (row['play_pattern']['id'],
@@ -43,21 +43,23 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
                     """, (match_id,))
                     season_id = cur.fetchone()[0]
                     cur.execute("""
-                        INSERT INTO event_info (id, 
-                                                index, 
-                                                period, 
-                                                timestamp, 
-                                                minute, 
-                                                second, 
-                                                event_type_id, 
-                                                possession, 
-                                                possession_team_id, 
-                                                play_pattern_id, 
-                                                team_id, 
-                                                duration) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        INSERT INTO events (id, 
+                                            season_id,
+                                            index, 
+                                            period, 
+                                            timestamp, 
+                                            minute, 
+                                            second, 
+                                            event_type_id, 
+                                            possession, 
+                                            possession_team_id, 
+                                            play_pattern_id, 
+                                            team_id, 
+                                            duration) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         ON CONFLICT (id) DO NOTHING;
                     """, (row['id'],
+                          season_id,
                           row['index'],
                           row['period'],
                           row['timestamp'],
@@ -69,12 +71,6 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
                           row['play_pattern']['id'],
                           row['team']['id'],
                           row.get('duration', None)))
-                    conn.commit()
-                    cur.execute("""
-                        INSERT INTO events (id, season_id)
-                        VALUES (%s, %s)
-                        ON CONFLICT (id) DO NOTHING;
-                    """, (row['id'], season_id))
                     conn.commit()
 
                     # tactics
@@ -99,11 +95,11 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
                     # shot
                     if row['type']['id'] == 16:
                         cur.execute("""
-                            INSERT INTO shot (event_id, 
-                                              player_id,
-                                              team_id, 
-                                              statsbomb_xg,
-                                              first_time)
+                            INSERT INTO shots (event_id, 
+                                               player_id,
+                                               team_id, 
+                                               statsbomb_xg,
+                                               first_time)
                             VALUES (%s, %s, %s, %s, %s);
                         """, (row['id'],
                               row['player']['id'],
@@ -120,11 +116,11 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
                         else:
                             recipient_id = None
                         cur.execute("""
-                            INSERT INTO pass (event_id, 
-                                              team_id, 
-                                              player_id,
-                                              recipient_id,
-                                              through_ball)
+                            INSERT INTO passes (event_id, 
+                                                team_id, 
+                                                player_id,
+                                                recipient_id,
+                                                through_ball)
                             VALUES (%s, %s, %s, %s, %s);
                         """, (row['id'],
                               row['team']['id'],
@@ -136,10 +132,11 @@ with psycopg.connect(f"dbname=project_database host=localhost user=postgres pass
                     # dribble
                     if row['type']['id'] == 14:
                         cur.execute("""
-                            INSERT INTO dribble (event_id, player_id, outcome)
-                            VALUES (%s, %s, %s)
+                            INSERT INTO dribbles (event_id, player_id, outcome_id, outcome_name)
+                            VALUES (%s, %s, %s, %s)
                         """, (row['id'],
                               row['player']['id'],
+                              row['dribble']['outcome']['id'],
                               row['dribble']['outcome']['name']))
                     conn.commit()
 

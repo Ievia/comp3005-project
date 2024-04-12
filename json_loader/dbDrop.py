@@ -4,7 +4,7 @@
 
 import psycopg
 
-with psycopg.connect(f"dbname=project_database user=postgres password=1234") as conn:
+with psycopg.connect(f"dbname=project_database host=localhost user=postgres password=1234") as conn:
     with conn.cursor() as cur:
         cur.execute("""
             DROP TABLE IF EXISTS card,

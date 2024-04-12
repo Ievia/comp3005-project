@@ -67,14 +67,13 @@ def load_database(cursor, conn):
     # Import the dbexport.sql database data into this database
     try:
         command = f'psql -h {host} -U {user} -d {query_database_name} -a -f {os.path.join(dir_path, "dbexport.sql")}'
-        env = os.environ.copy()
-        env['PGPASSWORD'] = password
-        # env = {'PGPASSWORD': password}
+        env = {'PGPASSWORD': password}
         subprocess.run(command, shell=True, check=True, env=env)
 
-        # original
+        # for test on mac & windows
         # command = f'psql -h {host} -U {user} -d {query_database_name} -a -f {os.path.join(dir_path, "dbexport.sql")}'
-        # env = {'PGPASSWORD': password}
+        # env = os.environ.copy()
+        # env['PGPASSWORD'] = password
         # subprocess.run(command, shell=True, check=True, env=env)
 
     except subprocess.CalledProcessError as e:
@@ -135,8 +134,8 @@ def get_time(cursor, conn, sql_query):
         else:
             print("Execution Time not found in EXPLAIN ANALYZE output.")
             return f"NA"
-    except:
-        print("[ERROR] Error getting time.")
+    except Exception as error:
+        print(f"[ERROR] Error getting time.\n{error}")
 
 
 # Write the results into some Q_n CSV. If the is an error with the query, it is a INC result - Do NOT Modify
@@ -320,7 +319,6 @@ def Q_6(cursor, conn, execution_time):
         GROUP BY teams.team_name
         HAVING COUNT(shots.team_id) >= 1
         ORDER BY COUNT(shots.team_id) DESC
-
     """
 
     #==========================================================================

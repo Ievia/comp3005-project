@@ -254,3 +254,5 @@ cython_debug/
 #.idea/
 /open-data-0067cae166a56aa80b2ef18f61e16158d6a7359a/
 *.csv
+README.md
+/.idea/

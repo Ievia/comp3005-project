@@ -79,12 +79,6 @@ def load_database(conn):
         env = {'PGPASSWORD': password}
         subprocess.run(command, shell=True, check=True, env=env)
 
-        # for testing on mac & windows
-        # command = f'psql -h {host} -U {user} -d {query_database_name} -a -f {os.path.join(dir_path, "dbexport.sql")}'
-        # env = os.environ.copy()
-        # env['PGPASSWORD'] = password
-        # subprocess.run(command, shell=True, check=True, env=env)
-
     except Exception as error:
         print(f"An error occurred while loading the database: {error}")
 
